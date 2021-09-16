@@ -1,3 +1,9 @@
+/*
+Homework A1b
+September 18, 2021
+Braxton Madison
+*/
+
 interface Point {
     x: number,
     y: number,

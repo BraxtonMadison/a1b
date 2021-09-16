@@ -1,6 +1,12 @@
 import {Drawing, Vector, Point} from "./common"
 import {init_tests, draw_tests} from "./projection_test"
 
+/*
+Homework A1b
+September 18, 2021
+Braxton Madison
+*/
+
 // A class for our application state and functionality
 class MyDrawing extends Drawing {
     
