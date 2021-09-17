@@ -139,18 +139,33 @@ class MyDrawing extends Drawing {
     }
 
     perspective(fov: number, near: number, far: number) {
-        var top = Math.tan(this.toRadians(fov)) * near
+        var f = far
+        var n = near
+        var top = Math.tan(this.toRadians(fov)) * Math.abs(near)
         var bottom = (-1) * top
-        var right = (this.canv.height / 2) * (this.canv.width / 2) / top
+        var right = (this.canv.width / 2) * top / (this.canv.height / 2)
         var left = (-1) * right
+        //console.log(near, far, top, bottom, right, left)
         this.cpm = {
             values : [
-                [(2 * near)/(right - left), 0, 0, (-1) *(right + left)/(right - left)],
-                [0, (2 * near)/(top - bottom), 0, (-1) * (top + bottom)/(top - bottom)],
-                [0, 0, 2 * (far + near)/(near - far), (near * far) * (near + far)/(near - far)],
+                [n / right, 0, 0, 0],
+                [0, n / top, 0, 0],
+                [0, 0, (f+n)/(n-f), 2*f*n/(f-n)],
                 [0, 0, 1, 0]
             ]
         }
+        // var top = Math.tan(this.toRadians(fov)) * Math.abs(near)
+        // var bottom = (-1) * top
+        // var right = (this.canv.width / 2) * top / (this.canv.height / 2)
+        // var left = (-1) * right
+        // this.cpm = {
+        //     values : [
+        //         [(2 * Math.abs(near))/(right - left), 0, (right + left)/(right - left), 0],
+        //         [0, (2 * Math.abs(near))/(top - bottom), (top + bottom)/(top - bottom), 0],
+        //         [0, 0, (Math.abs(far) + Math.abs(near))/(Math.abs(near) - Math.abs(far)), 2 * Math.abs(near) * Math.abs(far) / (Math.abs(near) - Math.abs(far))],
+        //         [0, 0, -1, 0]
+        //     ]
+        // }
     }
     //I may need to have a helper method called performOrtho(point) as well as a switch that says which type of projection is 
     //currently active - actually have a projection() function that outputs a point and takes in a point, you also may need to hav
