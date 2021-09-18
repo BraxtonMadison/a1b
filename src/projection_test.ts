@@ -1,4 +1,4 @@
-import {Drawing} from "common"
+import {Drawing, Point} from "common"
 
 /*
 Homework A1b
@@ -391,7 +391,50 @@ function Circle(dr: Drawing)
 
 // you should write this
 function persp_initials(dr: Drawing) {
+  dr.beginShape()
+  dr.initMatrix()
+  dr.perspective(60, -1, -100)
 
+  dr.vertex(-1, -1, -1)
+  dr.vertex(-1, 1, -3)
+
+  dr.vertex(-1, 1, -3)
+  dr.vertex(-0.6, 1, -3)
+
+  dr.vertex(-0.6, 1, -3)
+  dr.vertex(-0.2, 0.75, -2.75)
+  
+  dr.vertex(-0.2, 0.75, -2.75)
+  dr.vertex(-0.2, 0.25, -2.25)
+  
+  dr.vertex(-0.2, 0.25, -2.25)
+  dr.vertex(-0.6, 0, -2)
+
+  dr.vertex(-0.6, 0, -2)
+  dr.vertex(-0.2, -0.25, -1.75)
+
+  dr.vertex(-0.2, -0.25, -1.75)
+  dr.vertex(-0.2, -0.75, -1.25)
+
+  dr.vertex(-0.2, -0.75, -1.25)
+  dr.vertex(-0.6, -1, -1)
+
+  dr.vertex(-0.6, -1, -1)
+  dr.vertex(-1, -1, -1)
+
+  //M
+  dr.vertex(.2, -1, -1)
+  dr.vertex(.2, 1, -3)
+
+  dr.vertex(.2, 1, -3)
+  dr.vertex(.6, .5, -2.5)
+
+  dr.vertex(.6, .5, -2.5)
+  dr.vertex(1, 1, -3)
+
+  dr.vertex(1, 1, -3)
+  dr.vertex(1, -1, -1)
+  dr.endShape()
 }
 
 export {init_tests, draw_tests}

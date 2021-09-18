@@ -1,3 +1,4 @@
+import { Matrix3 } from "three"
 import {Drawing, Vector, Point} from "./common"
 import {init_tests, draw_tests} from "./projection_test"
 
