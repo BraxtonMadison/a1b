@@ -94,6 +94,10 @@ class MyDrawing extends Drawing {
             y0 = this.cpm.values[1][0] * x0 + this.cpm.values[1][1] * y0 + this.cpm.values[1][2] * z0 + this.cpm.values[1][3] * w0
             z0 = this.cpm.values[2][0] * x0 + this.cpm.values[2][1] * y0 + this.cpm.values[2][2] * z0 + this.cpm.values[2][3] * w0
             w0 = this.cpm.values[3][0] * x0 + this.cpm.values[3][1] * y0 + this.cpm.values[3][2] * z0 + this.cpm.values[3][3] * w0
+            // x0 = x0 / w0
+            // y0 = y0 / w0
+            // z0 = z0 / w0
+            // w0 = w0 / w0
             //multiply by vp matrix to get into screenspace
             var mvp: matrix4x4 = {
                 values: [
@@ -110,6 +114,7 @@ class MyDrawing extends Drawing {
             x0 = x0 / w0
             y0 = y0 / w0
             z0 = z0 / w0
+            w0 = w0 / w0
             if (this.v1set) {
                 //Since v1 is already set, draw a line from v1 to v2 (the current vertex), then reset v1.
                 var vertex2: Point = {
@@ -144,7 +149,7 @@ class MyDrawing extends Drawing {
     perspective(fov: number, near: number, far: number) {
         var f = far
         var n = near
-        var t = Math.tan(this.toRadians(fov / 2)) * Math.abs(n)
+        var t = Math.abs(Math.tan(this.toRadians(fov / 2)) * n)
         var b = -t
         var aspectRatio = this.canv.width / this.canv.height
         var r = t * aspectRatio
@@ -153,39 +158,10 @@ class MyDrawing extends Drawing {
             values: [
                 [2*n/(r-l), 0, (l+r)/(l-r),0],
                 [0, 2*n/(t-b),(b+t)/(b-t), 0],
-                [0, 0, (f+n)/(n-f), 2*f*n/(f-n)],
+                [0, 0, (f+n)/(f-n), 2*f*n/(f-n)],
                 [0, 0, 1, 0]
             ]
         }
-        // this.cpm = {
-        //     values : [
-        //         [n, 0, 0, 0],
-        //         [0, n, 0, 0],
-        //         [0, 0, n+f, -f*n],
-        //         [0, 0, 1, 0]
-        //     ]
-        // }
-        //console.log(near, far, top, bottom, right, left)
-        // this.cpm = {
-        //     values : [
-        //         [n / r, 0, 0, 0],
-        //         [0, n / t, 0, 0],
-        //         [0, 0, (f+n)/(n-f), 2*f*n/(f-n)],
-        //         [0, 0, 1, 0]
-        //     ]
-        // }
-        // var top = Math.tan(this.toRadians(fov)) * Math.abs(near)
-        // var bottom = (-1) * top
-        // var right = (this.canv.width / 2) * top / (this.canv.height / 2)
-        // var left = (-1) * right
-        // this.cpm = {
-        //     values : [
-        //         [(2 * Math.abs(near))/(right - left), 0, (right + left)/(right - left), 0],
-        //         [0, (2 * Math.abs(near))/(top - bottom), (top + bottom)/(top - bottom), 0],
-        //         [0, 0, (Math.abs(far) + Math.abs(near))/(Math.abs(near) - Math.abs(far)), 2 * Math.abs(near) * Math.abs(far) / (Math.abs(near) - Math.abs(far))],
-        //         [0, 0, -1, 0]
-        //     ]
-        // }
     }
     //I may need to have a helper method called performOrtho(point) as well as a switch that says which type of projection is 
     //currently active - actually have a projection() function that outputs a point and takes in a point, you also may need to hav
