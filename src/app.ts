@@ -107,6 +107,9 @@ class MyDrawing extends Drawing {
             y0 = mvp.values[1][0] * x0 + mvp.values[1][1] * y0 + mvp.values[1][2] * z0 + mvp.values[1][3] * w0
             z0 = mvp.values[2][0] * x0 + mvp.values[2][1] * y0 + mvp.values[2][2] * z0 + mvp.values[2][3] * w0
             w0 = mvp.values[3][0] * x0 + mvp.values[3][1] * y0 + mvp.values[3][2] * z0 + mvp.values[3][3] * w0
+            x0 = x0 / w0
+            y0 = y0 / w0
+            z0 = z0 / w0
             if (this.v1set) {
                 //Since v1 is already set, draw a line from v1 to v2 (the current vertex), then reset v1.
                 var vertex2: Point = {
@@ -141,19 +144,36 @@ class MyDrawing extends Drawing {
     perspective(fov: number, near: number, far: number) {
         var f = far
         var n = near
-        var top = Math.tan(this.toRadians(fov)) * Math.abs(near)
-        var bottom = (-1) * top
-        var right = (this.canv.width / 2) * top / (this.canv.height / 2)
-        var left = (-1) * right
-        //console.log(near, far, top, bottom, right, left)
+        var t = Math.tan(this.toRadians(fov / 2)) * Math.abs(n)
+        var b = -t
+        var aspectRatio = this.canv.width / this.canv.height
+        var r = t * aspectRatio
+        var l = b * aspectRatio
         this.cpm = {
-            values : [
-                [n / right, 0, 0, 0],
-                [0, n / top, 0, 0],
+            values: [
+                [2*n/(r-l), 0, (l+r)/(l-r),0],
+                [0, 2*n/(t-b),(b+t)/(b-t), 0],
                 [0, 0, (f+n)/(n-f), 2*f*n/(f-n)],
                 [0, 0, 1, 0]
             ]
         }
+        // this.cpm = {
+        //     values : [
+        //         [n, 0, 0, 0],
+        //         [0, n, 0, 0],
+        //         [0, 0, n+f, -f*n],
+        //         [0, 0, 1, 0]
+        //     ]
+        // }
+        //console.log(near, far, top, bottom, right, left)
+        // this.cpm = {
+        //     values : [
+        //         [n / r, 0, 0, 0],
+        //         [0, n / t, 0, 0],
+        //         [0, 0, (f+n)/(n-f), 2*f*n/(f-n)],
+        //         [0, 0, 1, 0]
+        //     ]
+        // }
         // var top = Math.tan(this.toRadians(fov)) * Math.abs(near)
         // var bottom = (-1) * top
         // var right = (this.canv.width / 2) * top / (this.canv.height / 2)
